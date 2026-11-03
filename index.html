@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="BiLi bridges the last mile in LiDAR localization by combining an implicit scene manifold, a distilled kinematic prior, and dynamic manifold gating.">
+  <meta property="og:title" content="BiLi — Bridging the Last Mile in LiDAR Localization">
+  <meta property="og:description" content="Precise poses are not enough. Explore BiLi's stable LiDAR localization and a synchronized four-method Oxford trajectory replay.">
+  <meta property="og:image" content="https://reckozmh.github.io/BiLi/FIG/FIG1.png">
+  <meta name="theme-color" content="#111d29">
+  <title>BiLi | Bridging the Last Mile in LiDAR Localization</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="BiLi home"><span class="brand-mark" aria-hidden="true">B<span>·</span>L</span><span>BiLi<span class="brand-sub">Research project</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="#idea">The idea</a><a href="#method">Method</a><a href="#replay">Live comparison</a><a href="#results">Results</a>
+    </nav>
+    <a class="header-paper" href="Paper/BiLi_Final_poster%20%281%29.pdf">Read paper <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="main">
+    <section class="hero section-wrap" id="top">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> NeurIPS 2026 manuscript <span class="eyebrow-dot">·</span> LiDAR localization</div>
+        <h1>Precision is only <em>half</em> the journey.</h1>
+        <p class="hero-lede">BiLi bridges the last mile from accurate single-frame poses to <strong>stable, continuous localization</strong> in the real world.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#replay">Explore the trajectory <span aria-hidden="true">↗</span></a><a class="button button-ghost" href="Paper/BiLi_Final_poster%20%281%29.pdf">Download paper <span aria-hidden="true">↓</span></a></div>
+        <p class="authors">Minghang Zhu* · Junchuan Lan* · Zhijing Wang · Haoze Chang · Wen Li · Sheng Ao† · Cheng Wang</p>
+        <p class="author-note">* Equal contribution &nbsp; † Corresponding author</p>
+      </div>
+      <div class="hero-visual" aria-label="BiLi concept visualization">
+        <span class="visual-label visual-label-top">THE LAST MILE</span>
+        <div class="hero-road" aria-hidden="true"><span class="road-line road-line-a"></span><span class="road-line road-line-b"></span><span class="road-line road-line-c"></span><span class="hero-car"><span></span></span></div>
+        <div class="visual-callout"><span class="signal-dot"></span> A trajectory that stays coherent.</div>
+        <span class="visual-label visual-label-bottom">LiDAR · Manifold · Motion</span>
+      </div>
+    </section>
+
+    <section class="statement" id="idea">
+      <div class="section-wrap statement-grid">
+        <div><p class="section-kicker">01 / The problem</p><h2>Accurate at a point.<br><span>Unstable over time.</span></h2></div>
+        <div class="statement-body"><p>Scene-coordinate regression can localize individual LiDAR scans accurately. But independent frame-wise predictions may jump between nearby poses. A vehicle needs a trajectory that makes sense <em>between</em> frames, too.</p><p>BiLi brings geometric structure and learned motion into the localization process—without carrying the offline teacher into deployment.</p></div>
+      </div>
+      <div class="section-wrap figure-frame motivation-frame"><img src="FIG/FIG1.png" alt="Paper motivation figure contrasting unstable framewise localization with a stable trajectory" loading="lazy"><div class="figure-caption"><span>FIGURE 01</span> Why the last mile matters: consistent localization along a road.</div></div>
+    </section>
+
+    <section class="method section-wrap" id="method">
+      <div class="section-head"><div><p class="section-kicker">02 / The approach</p><h2>Geometry teaches.<br><span>Motion remembers.</span></h2></div><p>Three complementary components connect a single-scan pose estimate to a coherent trajectory.</p></div>
+      <div class="pillar-grid">
+        <article class="pillar"><span class="pillar-index">01</span><div class="pillar-symbol symbol-field" aria-hidden="true"></div><h3>Implicit Manifold Regularization</h3><p>An offline neural signed-distance field represents scene geometry. Projecting predicted scene coordinates toward its zero-level surface gives the pose estimator a physically grounded geometric target.</p><span class="pillar-tag">IMR · geometric teacher</span></article>
+        <article class="pillar"><span class="pillar-index">02</span><div class="pillar-symbol symbol-motion" aria-hidden="true"></div><h3>Mamba-driven Kinematic Distillation</h3><p>A stateful motion prior learns the temporal continuity exposed by the offline teacher. It carries useful kinematic structure forward without requiring the reconstructed field at inference.</p><span class="pillar-tag">MDKD · motion prior</span></article>
+        <article class="pillar"><span class="pillar-index">03</span><div class="pillar-symbol symbol-gate" aria-hidden="true"></div><h3>Dynamic Manifold Gating</h3><p>An adaptive Cauchy-kernel gate balances the absolute LiDAR pose and the temporal prior on SE(3), suppressing implausible jumps while retaining evidence from the current scan.</p><span class="pillar-tag">DMG · adaptive fusion</span></article>
+      </div>
+      <div class="method-figure figure-frame"><img src="FIG/FIG2.png" alt="BiLi method architecture showing geometric regularization, kinematic distillation and dynamic gating" loading="lazy"><div class="figure-caption"><span>FIGURE 02</span> BiLi architecture, as presented in the manuscript.</div></div>
+      <div class="mesh-panel"><div><p class="section-kicker">Inside the geometric teacher</p><h3>Learning the scene as a surface.</h3><p>The implicit signed-distance field provides a continuous geometric reference for offline regularization. This supplied reconstruction visualizes the scene structure used to guide the model.</p><p class="mesh-note">Visualization from the supplied research materials; not a live reconstruction.</p></div><figure><img src="mesh/Mesh.png" alt="Supplied visualization of the implicit neural field reconstruction" loading="lazy"><figcaption>Implicit neural-field reconstruction</figcaption></figure></div>
+    </section>
+
+    <section class="replay-section" id="replay">
+      <div class="section-wrap">
+        <div class="section-head replay-head"><div><p class="section-kicker">03 / Explore the data</p><h2>Four methods.<br><span>One stretch of road.</span></h2></div><p>QEOxford sequence 17-14-03-00. Four synchronized predictions, the same 400 frames, one shared scale. Watch where a single-frame estimate begins to shake.</p></div>
+        <div class="replay-shell">
+          <div class="replay-toolbar"><div class="replay-live"><span class="live-pulse"></span> SYNCHRONIZED REPLAY <span class="toolbar-sep">/</span> FRAMES 38650–39049</div><div class="replay-legend"><span><i class="legend-road"></i> GT road center</span><span><i class="legend-trail"></i> Raw predicted path</span></div></div>
+          <div class="replay-grid">
+            <article class="trajectory-panel bili-panel"><div class="panel-heading"><span class="panel-number">01</span><strong>BiLi</strong><span class="panel-label">OURS</span></div><canvas id="canvas-bili" width="640" height="410" aria-label="BiLi raw predicted vehicle trajectory"></canvas><div class="panel-metric">Mean XY error <strong>0.446 m</strong><span> · </span>3rd-difference <strong>0.408</strong></div></article>
+            <article class="trajectory-panel"><div class="panel-heading"><span class="panel-number">02</span><strong>LightLoc</strong><span class="panel-label baseline-label">BASELINE</span></div><canvas id="canvas-lightloc" width="640" height="410" aria-label="LightLoc raw predicted vehicle trajectory"></canvas><div class="panel-metric">Mean XY error <strong>1.185 m</strong><span> · </span>3rd-difference <strong>3.199</strong></div></article>
+            <article class="trajectory-panel"><div class="panel-heading"><span class="panel-number">03</span><strong>RALoc</strong><span class="panel-label baseline-label">BASELINE</span></div><canvas id="canvas-raloc" width="640" height="410" aria-label="RALoc raw predicted vehicle trajectory"></canvas><div class="panel-metric">Mean XY error <strong>0.910 m</strong><span> · </span>3rd-difference <strong>3.632</strong></div></article>
+            <article class="trajectory-panel"><div class="panel-heading"><span class="panel-number">04</span><strong>GTRLoc</strong><span class="panel-label baseline-label">BASELINE</span></div><canvas id="canvas-gtrloc" width="640" height="410" aria-label="GTRLoc raw predicted vehicle trajectory"></canvas><div class="panel-metric">Mean XY error <strong>1.001 m</strong><span> · </span>3rd-difference <strong>2.788</strong></div></article>
+          </div>
+          <div class="replay-controls"><button type="button" id="play-button" class="play-button" aria-label="Pause replay">Ⅱ</button><label class="sr-only" for="frame-range">Replay frame</label><input id="frame-range" type="range" min="0" max="399" value="0"><span id="frame-readout" class="frame-readout">Frame 38650 / 39049</span><button type="button" id="restart-button" class="restart-button" aria-label="Restart replay">↺</button></div>
+        </div>
+        <p id="replay-status" class="replay-note" role="status">Loading four synchronized trajectories…</p>
+        <p class="data-note">This is an illustrative 400-frame <strong>2D segment</strong>, not the full-benchmark score. Each colored line uses the supplied raw prediction without smoothing, interpolation, or retiming. A constant ground-truth-verified XY offset aligns coordinate origins; RALoc starts 5 records later to match the same frames. All four panels use identical bounds. The road ribbon is schematic, derived from ground truth—not a geographic basemap. “3rd-difference” is the mean magnitude of the third frame-to-frame position difference in m/frame³ for this segment. <a href="#results">See full paper results ↓</a></p>
+      </div>
+    </section>
+
+    <section class="results section-wrap" id="results"><div class="section-head"><div><p class="section-kicker">04 / Evidence</p><h2>Better localization.<br><span>Less trajectory jitter.</span></h2></div><p>Reported values below are from the manuscript's complete test sequences—not the illustrative replay above.</p></div>
+      <div class="result-cards"><article><span class="result-dataset">OXFORD / MEAN POSITION ERROR</span><div class="result-number">0.56 <span>m</span></div><p>BiLi, versus 0.75 m for GTRLoc. Mean orientation error: 0.91° versus 1.03°.</p></article><article><span class="result-dataset">NCLT / MEAN POSITION ERROR</span><div class="result-number">0.49 <span>m</span></div><p>BiLi, versus 1.40 m for GTRLoc. Mean orientation error: 2.38° versus 2.62°.</p></article><article><span class="result-dataset">OXFORD / MEAN JITTER</span><div class="result-number">0.22 <span>m/frame³</span></div><p>BiLi, versus 0.66 m/frame³ for GTRLoc in the manuscript's full-sequence evaluation.</p></article></div>
+      <div class="result-figures"><figure class="figure-frame"><img src="FIG/FIG3.png" alt="Oxford qualitative trajectory comparisons from the BiLi paper" loading="lazy"><figcaption class="figure-caption"><span>FIGURE 03</span> Oxford trajectory comparison</figcaption></figure><figure class="figure-frame"><img src="FIG/FIG4.png" alt="NCLT qualitative trajectory comparisons from the BiLi paper" loading="lazy"><figcaption class="figure-caption"><span>FIGURE 04</span> NCLT trajectory comparison</figcaption></figure></div>
+      <p class="results-footnote">Results and figures are taken from the supplied BiLi manuscript. Refer to the paper for benchmark protocols, complete tables, and ablations.</p>
+    </section>
+
+    <section class="share-section" id="paper"><div class="section-wrap share-grid"><div><p class="section-kicker">05 / Read & share</p><h2>The last mile<br><span>starts here.</span></h2><p>Read the manuscript, explore the four-method replay, or share this project page with the QR code.</p><div class="share-actions"><a class="button button-primary" href="Paper/BiLi_Final_poster%20%281%29.pdf">Read the manuscript <span aria-hidden="true">↗</span></a><a class="button button-ghost-light" href="mailto:mihoo@stu.xmu.edu.cn">Contact the authors <span aria-hidden="true">↗</span></a></div><p class="code-status">BiLi implementation and release materials are being prepared. This repository contains the project website and replay visualization, not the inference code.</p></div><div class="qr-card"><img src="assets/bili-qr.png" alt="QR code linking to the BiLi project website" width="200" height="200"><span>SCAN TO OPEN PROJECT PAGE</span><a href="https://reckozmh.github.io/BiLi/">reckozmh.github.io/BiLi/</a></div></div></section>
+  </main>
+  <footer class="site-footer"><span>© 2026 BiLi research project · Xiamen University</span><span>Built for research communication.</span><a href="#top">Back to top ↑</a></footer>
+</body>
+</html>
