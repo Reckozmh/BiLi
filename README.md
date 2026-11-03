@@ -1,6 +1,7 @@
 # BiLi — Bridging the Last Mile in LiDAR Localization
 
-Project website: **[reckozmh.github.io/BiLi/](https://reckozmh.github.io/BiLi/)**  
+Project website: **[reckozmh.github.io/BiLi/](https://reckozmh.github.io/BiLi/)**
+
 Manuscript: [BiLi PDF](Paper/BiLi_Final_poster%20%281%29.pdf)
 
 BiLi combines implicit scene-manifold regularization, a distilled kinematic prior, and dynamic manifold gating to improve the spatial accuracy and temporal consistency of LiDAR localization. The supplied manuscript identifies the work as a NeurIPS 2026 manuscript. The implementation and release materials are being prepared; this repository contains the website and its trajectory visualization, **not** the model inference/training code.
